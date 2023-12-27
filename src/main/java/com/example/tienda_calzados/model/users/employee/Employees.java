@@ -64,6 +64,6 @@ public class Employees extends Persona implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return getActive();
     }
 }

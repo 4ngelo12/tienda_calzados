@@ -23,7 +23,7 @@ public class CustomerService {
     @Autowired
     List<CustomerValidation> validadores;
 
-    public ResponseCustomerRegister saveEmployee(RegisterCustomer data) {
+    public ResponseCustomerRegister saveCustomer(RegisterCustomer data) {
         validadores.forEach(v -> v.validation(data));
         Customers customer = customerRepository.save(new Customers(data, passwordEncoder));
 

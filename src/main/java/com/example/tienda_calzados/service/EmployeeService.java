@@ -9,6 +9,7 @@ import com.example.tienda_calzados.model.users.validation.EmployeeValidation;
 import com.example.tienda_calzados.repository.EmployeeRepository;
 import com.example.tienda_calzados.repository.RoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -37,5 +38,16 @@ public class EmployeeService {
         Employees emp = employeeRepository.save(new Employees(data, role, passwordEncoder));
 
         return new ResponseEmployeeRegister(emp);
+    }
+
+    public ResponseEntity<List<Employees>> obtenerDatos() {
+        var emp = employeeRepository.findAll();
+        return ResponseEntity.ok(emp);
+    }
+
+    public ResponseEntity<Object> deleteEmployee(Long id) {
+        var emp = employeeRepository.getReferenceById(id);
+        emp.desactivateAccount();
+        return ResponseEntity.noContent().build();
     }
 }

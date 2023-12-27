@@ -9,7 +9,7 @@ import java.time.LocalDate;
 @Getter
 @EqualsAndHashCode
 @MappedSuperclass
-public class Persona {
+public abstract class Persona {
     @Column(length = 60, nullable = false)
     protected String name;
     @Column(length = 60, nullable = false)
@@ -22,4 +22,8 @@ public class Persona {
     protected String password;
     @Column(length = 5, nullable = false, columnDefinition = "tinyint")
     protected Boolean active;
+
+    public void desactivateAccount() {
+        this.active = false;
+    }
 }

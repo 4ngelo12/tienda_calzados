@@ -23,10 +23,9 @@ public class TokenService {
         try {
             Algorithm algorithm = Algorithm.HMAC256(SECRET_KEY);
             return JWT.create()
-                    .withIssuer("hotel")
+                    .withIssuer("tienda_calzados")
                     .withSubject(emp.getUsername())
                     .withClaim("id", emp.getId())
-                    .withClaim("role", emp.getRole().getNombre())
                     .withExpiresAt(generarFechaExpiracion())
                     .sign(algorithm);
         } catch (JWTCreationException exception) {
@@ -38,7 +37,7 @@ public class TokenService {
         try {
             Algorithm algorithm = Algorithm.HMAC256(SECRET_KEY);
             return JWT.create()
-                    .withIssuer("hotel")
+                    .withIssuer("tienda_calzados")
                     .withClaim("id", customers.getId())
                     .withExpiresAt(generarFechaExpiracion())
                     .sign(algorithm);
