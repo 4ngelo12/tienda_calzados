@@ -5,7 +5,7 @@ import com.example.tienda_calzados.infra.security.TokenService;
 import com.example.tienda_calzados.model.users.employee.Employees;
 import com.example.tienda_calzados.model.users.employee.RegisterEmployee;
 import com.example.tienda_calzados.model.users.employee.ResponseEmployeeRegister;
-import com.example.tienda_calzados.model.users.validation.EmployeeValidation;
+import com.example.tienda_calzados.model.validation.RegisterValidation;
 import com.example.tienda_calzados.repository.EmployeeRepository;
 import com.example.tienda_calzados.repository.RoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +26,7 @@ public class EmployeeService {
     @Autowired
     private TokenService tokenService;
     @Autowired
-    List<EmployeeValidation> validadores;
+    List<RegisterValidation<RegisterEmployee>> validadores;
 
     public ResponseEmployeeRegister saveEmployee(RegisterEmployee data) {
         if (roleRepository.findById(data.idRole()).isEmpty()) {

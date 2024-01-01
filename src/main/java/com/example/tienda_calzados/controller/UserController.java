@@ -83,7 +83,6 @@ public class UserController {
         Authentication authToken = new UsernamePasswordAuthenticationToken(authData.username(),
                 authData.password());
         var usuarioAutenticado = authenticationManager.authenticate(authToken);
-        System.out.println(usuarioAutenticado.getCredentials().toString());
         var JWTtoken = tokenService.generarTokenCustomer((Customers) usuarioAutenticado.getPrincipal());
 
         return ResponseEntity.ok(new JWTToken(JWTtoken));

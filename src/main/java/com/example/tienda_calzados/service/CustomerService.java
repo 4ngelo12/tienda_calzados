@@ -4,7 +4,7 @@ import com.example.tienda_calzados.infra.security.TokenService;
 import com.example.tienda_calzados.model.users.customer.Customers;
 import com.example.tienda_calzados.model.users.customer.RegisterCustomer;
 import com.example.tienda_calzados.model.users.customer.ResponseCustomerRegister;
-import com.example.tienda_calzados.model.users.validation.CustomerValidation;
+import com.example.tienda_calzados.model.validation.RegisterValidation;
 import com.example.tienda_calzados.repository.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -21,7 +21,7 @@ public class CustomerService {
     @Autowired
     private TokenService tokenService;
     @Autowired
-    List<CustomerValidation> validadores;
+    List<RegisterValidation<RegisterCustomer>> validadores;
 
     public ResponseCustomerRegister saveCustomer(RegisterCustomer data) {
         validadores.forEach(v -> v.validation(data));

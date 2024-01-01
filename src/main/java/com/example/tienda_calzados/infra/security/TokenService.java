@@ -26,6 +26,7 @@ public class TokenService {
                     .withIssuer("tienda_calzados")
                     .withSubject(emp.getUsername())
                     .withClaim("id", emp.getId())
+                    .withClaim("role", emp.getRole().getNombre())
                     .withExpiresAt(generarFechaExpiracion())
                     .sign(algorithm);
         } catch (JWTCreationException exception) {

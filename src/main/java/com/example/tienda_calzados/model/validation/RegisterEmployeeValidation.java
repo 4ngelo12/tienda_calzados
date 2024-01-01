@@ -1,4 +1,4 @@
-package com.example.tienda_calzados.model.users.validation;
+package com.example.tienda_calzados.model.validation;
 
 import com.example.tienda_calzados.model.users.employee.RegisterEmployee;
 import com.example.tienda_calzados.repository.EmployeeRepository;
@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class RegisterEmployeeValidation implements EmployeeValidation{
+public class RegisterEmployeeValidation implements RegisterValidation<RegisterEmployee> {
     @Autowired
     private EmployeeRepository employeeRepository;
 
