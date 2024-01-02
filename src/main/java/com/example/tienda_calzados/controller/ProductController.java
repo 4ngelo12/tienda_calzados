@@ -2,9 +2,12 @@ package com.example.tienda_calzados.controller;
 
 import com.example.tienda_calzados.model.products.RegisterProduct;
 import com.example.tienda_calzados.model.products.ResponseProductRegister;
+import com.example.tienda_calzados.model.products.ResponseProductUpdate;
+import com.example.tienda_calzados.model.products.UpdateProduct;
 import com.example.tienda_calzados.service.ProductService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -27,5 +30,18 @@ public class ProductController {
     public ResponseEntity<ResponseProductRegister> registerProduct(@RequestBody @Valid RegisterProduct data) {
         var response = productService.saveProduct(data);
         return ResponseEntity.ok(response);
+    }
+
+    @PatchMapping("/{id}")
+    @Transactional
+    public ResponseEntity<ResponseProductUpdate> editProduct(@RequestBody @Valid UpdateProduct data) {
+        var response = productService.updateProduct(data);
+        return ResponseEntity.ok(response);
+    }
+
+    @DeleteMapping("/{id}")
+    @Transactional
+    public ResponseEntity<Object> deleteEmp(@PathVariable Long id) {
+        return productService.deleteProduct(id);
     }
 }

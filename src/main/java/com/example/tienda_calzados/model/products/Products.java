@@ -5,13 +5,16 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.format.annotation.NumberFormat;
 
+import java.lang.reflect.Method;
 import java.math.BigDecimal;
+import java.util.function.Consumer;
 
 @Entity
 @Table
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
+@Setter
 @EqualsAndHashCode(of = "id")
 @ToString
 public class Products {
@@ -36,14 +39,16 @@ public class Products {
     private BigDecimal sale_price;
     @Column(nullable = false)
     private Integer stock;
+    @Column(length = 5, nullable = false, columnDefinition = "tinyint")
+    private Boolean active;
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "category_id")
     private Category category;
     @Transient
     @Getter
-    private static Integer number;
+    private static Integer count;
 
-    public Products (RegisterProduct data, Integer count) {
+    public Products (RegisterProduct data, Integer count, Category category) {
         this.code = generateCode(count);
         this.name = data.name();
         this.description = data.description();
@@ -53,13 +58,50 @@ public class Products {
         this.purchase_price = data.purchase_price();
         this.sale_price = data.sale_price();
         this.stock = data.stock();
+        this.active = true;
+        this.category = category;
     }
 
-    public void setNumber(Integer n) {
-        number = n;
+    public void setNumber(Integer number) {
+        number++;
+        count = number;
     }
 
     public static String generateCode(Integer count) {
         return "PROD00" + String.format("%03d", count);
+    }
+
+    public void deleteProduct() {
+        this.active = false;
+    }
+
+    public void activateProduct() {
+        this.active = true;
+    }
+
+    private <T> void assignIfNotNull(T value, Method setter) {
+        if (value != null) {
+            try {
+                setter.invoke(this, value);
+            } catch (Exception e) {
+                e.printStackTrace(); // Manejo de excepciones apropiado
+            }
+        }
+    }
+
+    public void updateProduct(UpdateProduct data, Category category) {
+        try {
+            assignIfNotNull(data.name(), getClass().getMethod("setName", String.class));
+            assignIfNotNull(data.description(), getClass().getMethod("setDescription", String.class));
+            assignIfNotNull(data.image(), getClass().getMethod("setImage", String.class));
+            assignIfNotNull(data.size(), getClass().getMethod("setSize", Integer.class));
+            assignIfNotNull(data.brand(), getClass().getMethod("setBrand", String.class));
+            assignIfNotNull(data.purchase_price(), getClass().getMethod("setPurchase_price", BigDecimal.class));
+            assignIfNotNull(data.sale_price(),getClass().getMethod("setSale_price", BigDecimal.class));
+            assignIfNotNull(data.stock(), getClass().getMethod("setSize", Integer.class));
+            assignIfNotNull(category, getClass().getMethod("setCategory", Category.class));
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+        }
     }
 }
