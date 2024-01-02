@@ -39,9 +39,15 @@ public class ProductController {
         return ResponseEntity.ok(response);
     }
 
+    @PatchMapping("/activate/{id}")
+    @Transactional
+    public ResponseEntity activateProduct(@PathVariable Long id) {
+        return productService.activateProduct(id);
+    }
+
     @DeleteMapping("/{id}")
     @Transactional
-    public ResponseEntity<Object> deleteEmp(@PathVariable Long id) {
+    public ResponseEntity<Object> deleteProduct(@PathVariable Long id) {
         return productService.deleteProduct(id);
     }
 }

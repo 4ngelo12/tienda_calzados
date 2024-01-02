@@ -38,6 +38,12 @@ public class ProductService {
         return new ResponseProductUpdate(products);
     }
 
+    public ResponseEntity activateProduct(Long id) {
+        var product = productRepository.getReferenceById(id);
+        product.activateProduct();
+        return ResponseEntity.noContent().build();
+    }
+
     public ResponseEntity<Object> deleteProduct(Long id) {
         var product = productRepository.getReferenceById(id);
         product.deleteProduct();
