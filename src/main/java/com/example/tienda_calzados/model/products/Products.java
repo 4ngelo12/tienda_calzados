@@ -7,9 +7,8 @@ import org.springframework.format.annotation.NumberFormat;
 
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
-import java.util.function.Consumer;
 
-@Entity
+@Entity(name = "Product")
 @Table
 @AllArgsConstructor
 @NoArgsConstructor

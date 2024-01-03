@@ -1,7 +1,6 @@
-package com.example.tienda_calzados.model.users.employee;
+package com.example.tienda_calzados.model.users;
 
 import com.example.tienda_calzados.model.Role.Role;
-import com.example.tienda_calzados.model.users.Persona;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
@@ -9,25 +8,38 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+import java.time.LocalDate;
 import java.util.Collection;
 import java.util.List;
 
-@Table(name = "employees")
-@Entity(name = "Employee")
+@Table(name = "users")
+@Entity(name = "User")
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(of = "id", callSuper = false)
+@EqualsAndHashCode(of = "id")
 @ToString
-public class Employees extends Persona implements UserDetails {
+public class Users implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(length = 60, nullable = false)
+    protected String name;
+    @Column(length = 60, nullable = false)
+    protected String lastname;
+    @Column(length = 70, nullable = false)
+    protected String email;
+    @Column(name = "birthday")
+    protected LocalDate birthdate;
+    @Column(length = 60, nullable = false)
+    protected String password;
+    @Column(length = 5, nullable = false, columnDefinition = "tinyint")
+    protected Boolean active;
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "role_id")
     private Role role;
 
-    public Employees(RegisterEmployee data, Role rol, BCryptPasswordEncoder passwordEncoder) {
+    public Users(RegisterUser data, Role rol, BCryptPasswordEncoder passwordEncoder) {
         this.name = data.name();
         this.lastname = data.lastname();
         this.email = data.email();
@@ -65,5 +77,9 @@ public class Employees extends Persona implements UserDetails {
     @Override
     public boolean isEnabled() {
         return getActive();
+    }
+
+    public void desactivateAccount() {
+        this.active = false;
     }
 }

@@ -23,7 +23,7 @@ public class ProductService {
         if (position == null) {
             position = Math.toIntExact(productRepository.count()) + 1;
         }
-        Category category = categoryRepository.findById(data.Idcategory()).get();
+        Category category = categoryRepository.findById(data.categoryId()).get();
         Products products = productRepository.save(new Products(data, position, category));
         products.setNumber(position);
 
