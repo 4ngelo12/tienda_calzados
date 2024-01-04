@@ -1,4 +1,4 @@
-package com.example.tienda_calzados.model.users.customer;
+package com.example.tienda_calzados.model.users;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -7,7 +7,7 @@ import jakarta.validation.constraints.Pattern;
 
 import java.time.LocalDate;
 
-public record RegisterCustomer(
+public record RegisterUser(
         @NotBlank
         @Pattern(regexp = "^[A-Za-záéíóúÁÉÍÓÚüÜñÑ ]{1,45}+$", message = "El nombre ingresado no es valido")
         String name,
@@ -20,6 +20,8 @@ public record RegisterCustomer(
         @NotNull
         LocalDate birthdate,
         @NotBlank
-        String password
-) {
+        String password,
+        @NotNull
+        Long idRole
+        ) {
 }

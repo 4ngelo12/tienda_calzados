@@ -5,8 +5,7 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.exceptions.JWTCreationException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
-import com.example.tienda_calzados.model.users.customer.Customers;
-import com.example.tienda_calzados.model.users.employee.Employees;
+import com.example.tienda_calzados.model.users.Users;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -19,27 +18,13 @@ public class TokenService {
     @Value("${api.security.secret}")
     private String SECRET_KEY;
 
-    public String generarTokenEmp(Employees emp) {
+    public String generarTokenEmp(Users emp) {
         try {
             Algorithm algorithm = Algorithm.HMAC256(SECRET_KEY);
             return JWT.create()
                     .withIssuer("tienda_calzados")
                     .withSubject(emp.getUsername())
                     .withClaim("id", emp.getId())
-                    .withClaim("role", emp.getRole().getNombre())
-                    .withExpiresAt(generarFechaExpiracion())
-                    .sign(algorithm);
-        } catch (JWTCreationException exception) {
-            throw new RuntimeException();
-        }
-    }
-
-    public String generarTokenCustomer(Customers customers) {
-        try {
-            Algorithm algorithm = Algorithm.HMAC256(SECRET_KEY);
-            return JWT.create()
-                    .withIssuer("tienda_calzados")
-                    .withClaim("id", customers.getId())
                     .withExpiresAt(generarFechaExpiracion())
                     .sign(algorithm);
         } catch (JWTCreationException exception) {
@@ -74,6 +59,6 @@ public class TokenService {
     }
 
     private Instant generarFechaExpiracion() {
-        return LocalDateTime.now().plusMinutes(10).toInstant(ZoneOffset.of("-05:00"));
+        return LocalDateTime.now().plusHours(2).toInstant(ZoneOffset.of("-05:00"));
     }
 }

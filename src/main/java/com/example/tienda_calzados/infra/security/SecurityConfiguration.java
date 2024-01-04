@@ -20,10 +20,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfiguration{
     @Autowired
     private SecurityFilter securityFilter;
-    @Autowired
-    private AuthEmployeeService authEmployeeService;
-    @Autowired
-    private AuthCustomerService authCustomerService;
 
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
@@ -44,11 +40,8 @@ public class SecurityConfiguration{
     }
 
     @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration,
-                                                       AuthenticationManagerBuilder builder)
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration)
             throws Exception {
-        builder.userDetailsService(authCustomerService);
-        builder.userDetailsService(authEmployeeService);
         return authenticationConfiguration.getAuthenticationManager();
     }
 

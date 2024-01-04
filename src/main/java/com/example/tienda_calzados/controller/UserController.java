@@ -2,16 +2,11 @@ package com.example.tienda_calzados.controller;
 
 import com.example.tienda_calzados.infra.security.JWTToken;
 import com.example.tienda_calzados.infra.security.TokenService;
-import com.example.tienda_calzados.model.users.customer.AuthCustomerData;
-import com.example.tienda_calzados.model.users.customer.Customers;
-import com.example.tienda_calzados.model.users.customer.RegisterCustomer;
-import com.example.tienda_calzados.model.users.customer.ResponseCustomerRegister;
-import com.example.tienda_calzados.model.users.employee.AuthEmployeeData;
-import com.example.tienda_calzados.model.users.employee.Employees;
-import com.example.tienda_calzados.model.users.employee.RegisterEmployee;
-import com.example.tienda_calzados.model.users.employee.ResponseEmployeeRegister;
-import com.example.tienda_calzados.service.CustomerService;
-import com.example.tienda_calzados.service.EmployeeService;
+import com.example.tienda_calzados.model.users.AuthUserData;
+import com.example.tienda_calzados.model.users.Users;
+import com.example.tienda_calzados.model.users.RegisterUser;
+import com.example.tienda_calzados.model.users.ResponseUserRegister;
+import com.example.tienda_calzados.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -33,57 +28,30 @@ public class UserController {
     @Autowired
     private AuthenticationManager authenticationManager;
     @Autowired
-    private CustomerService customerService;
-    @Autowired
-    private EmployeeService employeeService;
+    private UserService userService;
 
-    @PostMapping("/register/emp")
+    @PostMapping("/register")
     @Operation(
             summary = "Registra empleados en la aplicación",
             description = "",
             tags = {"post"})
-    public ResponseEntity<ResponseEmployeeRegister> registerEmployee(@RequestBody @Valid RegisterEmployee data) {
-        var response = employeeService.saveEmployee(data);
+    public ResponseEntity<ResponseUserRegister> registerEmployee(@RequestBody @Valid RegisterUser data) {
+        var response = userService.saveUser(data);
 
         return ResponseEntity.ok(response);
     }
 
-    @PostMapping("/register/customer")
-    @Operation(
-            summary = "Registra clientes en la aplicación",
-            description = "",
-            tags = {"post"})
-    public ResponseEntity<ResponseCustomerRegister> resgisterCustomer(@RequestBody @Valid RegisterCustomer data) {
-        var response = customerService.saveCustomer(data);
-        return ResponseEntity.ok(response);
-    }
-
-    @PostMapping("/login/emp")
+    @PostMapping("/login")
     @Operation(
             summary = "inicia sesión en la aplicación",
     description = "",
     tags = {"post"})
-    public ResponseEntity<JWTToken> authEmployee(@RequestBody @Valid AuthEmployeeData
+    public ResponseEntity<JWTToken> authEmployee(@RequestBody @Valid AuthUserData
                                                          authData) {
         Authentication authToken = new UsernamePasswordAuthenticationToken(authData.username(),
                 authData.password());
         var usuarioAutenticado = authenticationManager.authenticate(authToken);
-        var JWTtoken = tokenService.generarTokenEmp((Employees) usuarioAutenticado.getPrincipal());
-
-        return ResponseEntity.ok(new JWTToken(JWTtoken));
-    }
-
-    @PostMapping("/login/customer")
-    @Operation(
-            summary = "inicia sesión en la aplicación",
-            description = "",
-            tags = {"post"})
-    public ResponseEntity<Object> authCustomer(@RequestBody @Valid AuthCustomerData
-                                                         authData) {
-        Authentication authToken = new UsernamePasswordAuthenticationToken(authData.username(),
-                authData.password());
-        var usuarioAutenticado = authenticationManager.authenticate(authToken);
-        var JWTtoken = tokenService.generarTokenCustomer((Customers) usuarioAutenticado.getPrincipal());
+        var JWTtoken = tokenService.generarTokenEmp((Users) usuarioAutenticado.getPrincipal());
 
         return ResponseEntity.ok(new JWTToken(JWTtoken));
     }

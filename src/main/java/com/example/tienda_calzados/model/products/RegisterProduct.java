@@ -28,6 +28,6 @@ public record RegisterProduct(
         @Positive
         Integer stock,
         @NotNull
-        Long Idcategory
+        Long categoryId
 ) {
 }

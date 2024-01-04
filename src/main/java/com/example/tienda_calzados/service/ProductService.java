@@ -23,7 +23,7 @@ public class ProductService {
         if (position == null) {
             position = Math.toIntExact(productRepository.count()) + 1;
         }
-        Category category = categoryRepository.findById(data.Idcategory()).get();
+        Category category = categoryRepository.findById(data.categoryId()).get();
         Products products = productRepository.save(new Products(data, position, category));
         products.setNumber(position);
 
@@ -36,6 +36,12 @@ public class ProductService {
         products.updateProduct(data, category);
 
         return new ResponseProductUpdate(products);
+    }
+
+    public ResponseEntity activateProduct(Long id) {
+        var product = productRepository.getReferenceById(id);
+        product.activateProduct();
+        return ResponseEntity.noContent().build();
     }
 
     public ResponseEntity<Object> deleteProduct(Long id) {

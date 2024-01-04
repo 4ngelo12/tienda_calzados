@@ -1,7 +1,7 @@
 package com.example.tienda_calzados.controller;
 
-import com.example.tienda_calzados.model.users.employee.Employees;
-import com.example.tienda_calzados.service.EmployeeService;
+import com.example.tienda_calzados.model.users.Users;
+import com.example.tienda_calzados.service.UserService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.transaction.Transactional;
@@ -18,18 +18,20 @@ import java.util.List;
 @EnableMethodSecurity(securedEnabled = true)
 @SecurityRequirement(name = "bearer-key")
 @Tag(name = "Employee", description = "Funcionalidades para el empleado")
-public class EmployeeController {
+public class UsersController {
     @Autowired
-    private EmployeeService employeeService;
+    private UserService userService;
 
     @GetMapping
-    public ResponseEntity<List<Employees>> obtenerDatos() {
-        return employeeService.obtenerDatos();
+    public ResponseEntity<List<Users>> obtenerDatos() {
+        return userService.obtenerDatos();
     }
 
     @DeleteMapping("/{id}")
     @Transactional
     public ResponseEntity<Object> deleteEmp(@PathVariable Long id) {
-        return employeeService.deleteEmployee(id);
+        return userService.deleteUser(id);
     }
+
+
 }
