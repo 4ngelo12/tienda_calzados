@@ -1,6 +1,6 @@
 package com.example.tienda_calzados.infra.security;
 
-import com.example.tienda_calzados.repository.UserRepository;
+import com.example.tienda_calzados.repository.UsersRepository;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -19,7 +19,7 @@ public class SecurityFilter extends OncePerRequestFilter {
     @Autowired
     private TokenService tokenService;
     @Autowired
-    private UserRepository userRepository;
+    private UsersRepository usersRepository;
 
     @Override
     protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response,
@@ -32,7 +32,7 @@ public class SecurityFilter extends OncePerRequestFilter {
             var nombreUsuario = tokenService.getSubject(token);
             if (nombreUsuario != null) {
                 //Token Valido
-                var usuario = userRepository.findByEmail(nombreUsuario);
+                var usuario = usersRepository.findByEmail(nombreUsuario);
                 var authentication = new UsernamePasswordAuthenticationToken(usuario, null,
                         usuario.getAuthorities()); // Forzar inicio de sesion
                 SecurityContextHolder.getContext().setAuthentication(authentication);

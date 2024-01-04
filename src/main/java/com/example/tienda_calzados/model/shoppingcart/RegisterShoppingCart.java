@@ -9,7 +9,7 @@ public record RegisterShoppingCart(
         Integer amount,
         @NotNull
         @Positive
-        Long customerId,
+        Long userId,
         @NotNull
         @Positive
         Long productId

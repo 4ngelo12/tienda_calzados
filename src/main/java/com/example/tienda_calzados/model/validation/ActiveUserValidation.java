@@ -2,21 +2,22 @@ package com.example.tienda_calzados.model.validation;
 
 import com.example.tienda_calzados.model.shoppingcart.RegisterShoppingCart;
 import com.example.tienda_calzados.repository.ProductRepository;
+import com.example.tienda_calzados.repository.UsersRepository;
 import jakarta.validation.ValidationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class RegisterShoppingCartValidation implements RegisterValidation<RegisterShoppingCart>{
+public class ActiveUserValidation implements RegisterValidation<RegisterShoppingCart>{
     @Autowired
-    ProductRepository productRepository;
+    UsersRepository usersRepository;
 
     @Override
     public void validation(RegisterShoppingCart data) {
-        var disponible = productRepository.existsByIdAndStockGreaterThan(data.productId(), data.amount());
+        Boolean active = usersRepository.findByIdAndActiveIsTrue(data.userId());
 
-        if (!disponible) {
-            throw new ValidationException("No se encuentra disponible");
+        if (!active) {
+            throw new ValidationException("El producto no esta activo");
         }
     }
 }

@@ -1,6 +1,6 @@
 package com.example.tienda_calzados.model.sales;
 
-import com.example.tienda_calzados.model.users.customer.Customers;
+import com.example.tienda_calzados.model.users.Users;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.format.annotation.NumberFormat;
@@ -28,13 +28,13 @@ public class Sale {
     @NumberFormat(style = NumberFormat.Style.CURRENCY, pattern = "#,###.##")
     private BigDecimal total;
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "customer_id")
-    private Customers customers;
+    @JoinColumn(name = "user_id")
+    private Users users;
 
-    public Sale(RegisterSale data, Customers customers) {
+    public Sale(RegisterSale data, Users users) {
         this.code = UUID.randomUUID().toString().substring(0, 12);
         this.purchase_date = data.purchase_date();
         this.total = data.total();
-        this.customers = customers;
+        this.users = users;
     }
 }

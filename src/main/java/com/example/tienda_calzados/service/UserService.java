@@ -6,7 +6,7 @@ import com.example.tienda_calzados.model.users.Users;
 import com.example.tienda_calzados.model.users.RegisterUser;
 import com.example.tienda_calzados.model.users.ResponseUserRegister;
 import com.example.tienda_calzados.model.validation.RegisterValidation;
-import com.example.tienda_calzados.repository.UserRepository;
+import com.example.tienda_calzados.repository.UsersRepository;
 import com.example.tienda_calzados.repository.RoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -18,7 +18,7 @@ import java.util.List;
 @Service
 public class UserService {
     @Autowired
-    private UserRepository userRepository;
+    private UsersRepository usersRepository;
     @Autowired
     private RoleRepository roleRepository;
     @Autowired
@@ -35,18 +35,18 @@ public class UserService {
 
         validadores.forEach(v -> v.validation(data));
         var role = roleRepository.findById(data.idRole()).get();
-        Users emp = userRepository.save(new Users(data, role, passwordEncoder));
+        Users emp = usersRepository.save(new Users(data, role, passwordEncoder));
 
         return new ResponseUserRegister(emp);
     }
 
     public ResponseEntity<List<Users>> obtenerDatos() {
-        var emp = userRepository.findAll();
+        var emp = usersRepository.findAll();
         return ResponseEntity.ok(emp);
     }
 
     public ResponseEntity<Object> deleteUser(Long id) {
-        var emp = userRepository.getReferenceById(id);
+        var emp = usersRepository.getReferenceById(id);
         emp.desactivateAccount();
         return ResponseEntity.noContent().build();
     }

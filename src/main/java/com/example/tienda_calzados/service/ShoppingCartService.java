@@ -6,6 +6,7 @@ import com.example.tienda_calzados.model.shoppingcart.Shoppingcart;
 import com.example.tienda_calzados.model.validation.RegisterValidation;
 import com.example.tienda_calzados.repository.ProductRepository;
 import com.example.tienda_calzados.repository.ShoppingCartRepository;
+import com.example.tienda_calzados.repository.UsersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,7 +17,7 @@ public class ShoppingCartService {
     @Autowired
     private ShoppingCartRepository shoppingCartRepository;
     @Autowired
-    private CustomerRepository customerRepository;
+    private UsersRepository usersRepository;
     @Autowired
     private ProductRepository productRepository;
     @Autowired
@@ -24,7 +25,7 @@ public class ShoppingCartService {
 
     public ResponseShoppingCartRegister saveShoppingCart(RegisterShoppingCart data) {
         validadores.forEach(v -> v.validation(data));
-        var customer = customerRepository.getReferenceById(data.customerId());
+        var customer = usersRepository.getReferenceById(data.userId());
         var product = productRepository.getReferenceById(data.productId());
         Shoppingcart shoppingcart = shoppingCartRepository.save(new Shoppingcart(data, customer, product));
 

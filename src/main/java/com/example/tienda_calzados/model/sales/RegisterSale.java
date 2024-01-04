@@ -17,6 +17,6 @@ public record RegisterSale(
         Long idProduct,
         @NotNull
         @Positive
-        Long idCustomer
+        Long userId
 ) {
 }
