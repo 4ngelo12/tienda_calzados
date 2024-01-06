@@ -28,4 +28,11 @@ public class Detail {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "purchase_id")
     private Sale sale;
+
+    public Detail(RegisterDetail data, Products products, Sale sale) {
+        this.quantity = data.quantity();;
+        this.subTotal = data.subTotal();
+        this.products = products;
+        this.sale = sale;
+    }
 }

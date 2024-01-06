@@ -8,20 +8,28 @@ import com.example.tienda_calzados.repository.ProductRepository;
 import com.example.tienda_calzados.repository.ShoppingCartRepository;
 import com.example.tienda_calzados.repository.UsersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
 
 @Service
 public class ShoppingCartService {
-    @Autowired
-    private ShoppingCartRepository shoppingCartRepository;
-    @Autowired
-    private UsersRepository usersRepository;
-    @Autowired
-    private ProductRepository productRepository;
-    @Autowired
+    private final ShoppingCartRepository shoppingCartRepository;
+    private final UsersRepository usersRepository;
+    private final ProductRepository productRepository;
     List<RegisterValidation<RegisterShoppingCart>> validadores;
+
+    @Autowired
+    public ShoppingCartService(ShoppingCartRepository shoppingCartRepository, UsersRepository usersRepository,
+                               ProductRepository productRepository,
+                               List<RegisterValidation<RegisterShoppingCart>> validadores) {
+        this.shoppingCartRepository = shoppingCartRepository;
+        this.usersRepository = usersRepository;
+        this.productRepository = productRepository;
+        this.validadores = validadores;
+    }
 
     public ResponseShoppingCartRegister saveShoppingCart(RegisterShoppingCart data) {
         validadores.forEach(v -> v.validation(data));
@@ -30,5 +38,18 @@ public class ShoppingCartService {
         Shoppingcart shoppingcart = shoppingCartRepository.save(new Shoppingcart(data, customer, product));
 
         return new ResponseShoppingCartRegister(shoppingcart);
+    }
+
+    public ResponseEntity<Object> deleteElement(Long id) {
+        shoppingCartRepository.deleteById(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    public void deleteAllElement(Long id) {
+        shoppingCartRepository.deleteByUsersId(id);
+    }
+
+    public List<Shoppingcart> getAllShoppingCart(Long id) {
+        return shoppingCartRepository.findByUsersId(id);
     }
 }

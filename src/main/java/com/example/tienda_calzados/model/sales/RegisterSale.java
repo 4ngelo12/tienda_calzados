@@ -14,9 +14,6 @@ public record RegisterSale(
         BigDecimal total,
         @NotNull
         @Positive
-        Long idProduct,
-        @NotNull
-        @Positive
         Long userId
 ) {
 }

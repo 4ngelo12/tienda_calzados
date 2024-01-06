@@ -6,6 +6,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
 public interface UsersRepository extends JpaRepository<Users, Long> {
     UserDetails findByEmail(String email);
@@ -14,10 +16,5 @@ public interface UsersRepository extends JpaRepository<Users, Long> {
             where e.email=:email
             """)
     Users getUserData(String email);
-    @Query("""
-        select e.active from User e
-        where e.id=:idEmployee
-    """)
-    Boolean findActivoById(Long idEmployee);
-    Boolean findByIdAndActiveIsTrue(Long id);
+    Boolean existsByIdAndActiveTrue(Long id);
 }

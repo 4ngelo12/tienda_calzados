@@ -6,7 +6,7 @@ import com.example.tienda_calzados.model.users.AuthUserData;
 import com.example.tienda_calzados.model.users.Users;
 import com.example.tienda_calzados.model.users.RegisterUser;
 import com.example.tienda_calzados.model.users.ResponseUserRegister;
-import com.example.tienda_calzados.service.UserService;
+import com.example.tienda_calzados.service.UsersService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -28,7 +28,7 @@ public class UserController {
     @Autowired
     private AuthenticationManager authenticationManager;
     @Autowired
-    private UserService userService;
+    private UsersService usersService;
 
     @PostMapping("/register")
     @Operation(
@@ -36,7 +36,7 @@ public class UserController {
             description = "",
             tags = {"post"})
     public ResponseEntity<ResponseUserRegister> registerEmployee(@RequestBody @Valid RegisterUser data) {
-        var response = userService.saveUser(data);
+        var response = usersService.saveUser(data);
 
         return ResponseEntity.ok(response);
     }

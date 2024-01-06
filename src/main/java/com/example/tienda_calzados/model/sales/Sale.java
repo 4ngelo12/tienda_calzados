@@ -20,7 +20,7 @@ public class Sale {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(length = 15, nullable = false)
+    @Column(length = 16, nullable = false)
     private String code;
     @Column(columnDefinition = "DATE", nullable = false)
     private LocalDate purchase_date;
@@ -32,7 +32,7 @@ public class Sale {
     private Users users;
 
     public Sale(RegisterSale data, Users users) {
-        this.code = UUID.randomUUID().toString().substring(0, 12);
+        this.code = UUID.randomUUID().toString().substring(0, 16);
         this.purchase_date = data.purchase_date();
         this.total = data.total();
         this.users = users;
