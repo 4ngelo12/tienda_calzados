@@ -16,7 +16,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class UserService {
+public class UsersService {
     @Autowired
     private UsersRepository usersRepository;
     @Autowired
@@ -49,5 +49,9 @@ public class UserService {
         var emp = usersRepository.getReferenceById(id);
         emp.desactivateAccount();
         return ResponseEntity.noContent().build();
+    }
+
+    public Users getUser(Long id) {
+        return usersRepository.getReferenceById(id);
     }
 }

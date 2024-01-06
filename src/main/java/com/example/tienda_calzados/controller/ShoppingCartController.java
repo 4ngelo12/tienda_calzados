@@ -6,6 +6,7 @@ import com.example.tienda_calzados.service.ShoppingCartService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.security.PermitAll;
+import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -25,5 +26,11 @@ public class ShoppingCartController {
             @RequestBody @Valid RegisterShoppingCart data) {
         var response = shoppingCartService.saveShoppingCart(data);
         return ResponseEntity.ok(response);
+    }
+
+    @DeleteMapping("/{id}")
+    @Transactional
+    public ResponseEntity<Object> deleteElement(@PathVariable Long id) {
+        return shoppingCartService.deleteElement(id);
     }
 }

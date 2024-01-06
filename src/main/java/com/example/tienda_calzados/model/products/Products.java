@@ -103,4 +103,8 @@ public class Products {
             e.printStackTrace();
         }
     }
+
+    public BigDecimal subTotal(Integer quantity, BigDecimal price) {
+        return price.multiply(new BigDecimal(quantity));
+    }
 }
