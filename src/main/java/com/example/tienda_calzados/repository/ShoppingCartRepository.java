@@ -11,7 +11,7 @@ import java.util.List;
 
 @Repository
 public interface ShoppingCartRepository extends JpaRepository<Shoppingcart, Long> {
-    Page<Shoppingcart> findByUsersId(Pageable pageable, @Param("userId") Long usersId);
+    Page<Shoppingcart> findAll(Pageable pageable);
     List<Shoppingcart> findByUsersId(Long usersId);
     void deleteByUsersId(Long usersId);
     Long countByUsersId(Long usersId);

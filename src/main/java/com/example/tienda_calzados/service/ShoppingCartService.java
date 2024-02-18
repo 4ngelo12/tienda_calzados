@@ -1,5 +1,6 @@
 package com.example.tienda_calzados.service;
 
+import com.example.tienda_calzados.model.shoppingcart.ListShoppingCartData;
 import com.example.tienda_calzados.model.shoppingcart.RegisterShoppingCart;
 import com.example.tienda_calzados.model.shoppingcart.ResponseShoppingCartRegister;
 import com.example.tienda_calzados.model.shoppingcart.Shoppingcart;
@@ -8,10 +9,10 @@ import com.example.tienda_calzados.repository.ProductRepository;
 import com.example.tienda_calzados.repository.ShoppingCartRepository;
 import com.example.tienda_calzados.repository.UsersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-
-import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -49,7 +50,11 @@ public class ShoppingCartService {
         shoppingCartRepository.deleteByUsersId(id);
     }
 
-    public List<Shoppingcart> getAllShoppingCart(Long id) {
+    public Page<ListShoppingCartData> getAllShoppingCartView(Pageable pageable) {
+        return shoppingCartRepository.findAll(pageable).map(ListShoppingCartData::new);
+    }
+
+    public List<Shoppingcart> getAllShoppingCartbyUserId(Long id) {
         return shoppingCartRepository.findByUsersId(id);
     }
 }

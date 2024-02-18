@@ -1,5 +1,6 @@
 package com.example.tienda_calzados.controller;
 
+import com.example.tienda_calzados.model.shoppingcart.ListShoppingCartData;
 import com.example.tienda_calzados.model.shoppingcart.RegisterShoppingCart;
 import com.example.tienda_calzados.model.shoppingcart.ResponseShoppingCartRegister;
 import com.example.tienda_calzados.service.ShoppingCartService;
@@ -9,6 +10,9 @@ import jakarta.annotation.security.PermitAll;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,6 +30,12 @@ public class ShoppingCartController {
             @RequestBody @Valid RegisterShoppingCart data) {
         var response = shoppingCartService.saveShoppingCart(data);
         return ResponseEntity.ok(response);
+    }
+
+    @GetMapping
+    public ResponseEntity<Page<ListShoppingCartData>> getShoppingCart(
+            @PageableDefault(size = 80, page = 0) Pageable paginacion) {
+        return ResponseEntity.ok(shoppingCartService.getAllShoppingCartView(paginacion));
     }
 
     @DeleteMapping("/{id}")

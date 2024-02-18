@@ -6,6 +6,8 @@ import com.example.tienda_calzados.model.validation.RegisterValidation;
 import com.example.tienda_calzados.repository.CategoryRepository;
 import com.example.tienda_calzados.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -36,6 +38,14 @@ public class ProductService {
         products.updateProduct(data, category);
 
         return new ResponseProductUpdate(products);
+    }
+
+    public Page<ListProductData> getAllProducts(Pageable paginacion) {
+        return productRepository.findAllByActiveTrue(paginacion).map(ListProductData::new);
+    }
+
+    public ResponseProductRegister getProducts(Long id) {
+        return new ResponseProductRegister(productRepository.getReferenceById(id));
     }
 
     public ResponseEntity activateProduct(Long id) {
