@@ -36,7 +36,7 @@ public class DetailService {
     }
 
     public void insertData(Long userId, Long saleId) {
-        var shoppingcart = shoppingCartService.getAllShoppingCart(userId);
+        var shoppingcart = shoppingCartService.getAllShoppingCartbyUserId(userId);
         shoppingcart.forEach(element -> {
             RegisterDetail detail = new RegisterDetail(element.getAmount(),
                     element.getSubTotal(), element.getProducts().getId(), saleId);

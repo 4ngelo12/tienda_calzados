@@ -8,6 +8,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+import java.lang.reflect.Method;
 import java.time.LocalDate;
 import java.util.Collection;
 import java.util.List;
@@ -15,6 +16,7 @@ import java.util.List;
 @Table(name = "users")
 @Entity(name = "User")
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(of = "id")
@@ -81,5 +83,26 @@ public class Users implements UserDetails {
 
     public void desactivateAccount() {
         this.active = false;
+    }
+
+    private <T> void assignIfNotNull(T value, Method setter) {
+        if (value != null) {
+            try {
+                setter.invoke(this, value);
+            } catch (Exception e) {
+                e.printStackTrace(); // Manejo de excepciones apropiado
+            }
+        }
+    }
+
+    public void updateUserData(UpdateUser data) {
+        try {
+            assignIfNotNull(data.name(), getClass().getMethod("setName", String.class));
+            assignIfNotNull(data.lastname(), getClass().getMethod("setLastname", String.class));
+            assignIfNotNull(data.email(), getClass().getMethod("setEmail", String.class));
+            assignIfNotNull(data.birthdate(), getClass().getMethod("setBirthdate", LocalDate.class));
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+        }
     }
 }

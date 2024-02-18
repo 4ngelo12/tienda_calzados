@@ -2,13 +2,13 @@ package com.example.tienda_calzados.service;
 
 import com.example.tienda_calzados.infra.errors.IntegrityValidation;
 import com.example.tienda_calzados.infra.security.TokenService;
-import com.example.tienda_calzados.model.users.Users;
-import com.example.tienda_calzados.model.users.RegisterUser;
-import com.example.tienda_calzados.model.users.ResponseUserRegister;
+import com.example.tienda_calzados.model.users.*;
 import com.example.tienda_calzados.model.validation.RegisterValidation;
 import com.example.tienda_calzados.repository.UsersRepository;
 import com.example.tienda_calzados.repository.RoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -40,9 +40,15 @@ public class UsersService {
         return new ResponseUserRegister(emp);
     }
 
-    public ResponseEntity<List<Users>> obtenerDatos() {
-        var emp = usersRepository.findAll();
-        return ResponseEntity.ok(emp);
+    public Users getUserData(String token) {
+        var jwtToken = token.replace("Bearer ", "");
+        var nombreUsuario = tokenService.getSubject(jwtToken);
+
+        return usersRepository.getUserData(nombreUsuario);
+    }
+
+    public Page<ListUserData> getAllUsers(Pageable paginacion) {
+        return usersRepository.findAllByActiveTrue(paginacion).map(ListUserData::new);
     }
 
     public ResponseEntity<Object> deleteUser(Long id) {
@@ -53,5 +59,12 @@ public class UsersService {
 
     public Users getUser(Long id) {
         return usersRepository.getReferenceById(id);
+    }
+
+    public ResponseUserUpdate userUpdate(UpdateUser data) {
+        Users users = usersRepository.getReferenceById(data.id());
+        users.updateUserData(data);
+
+        return new ResponseUserUpdate(users);
     }
 }
