@@ -7,6 +7,8 @@ import com.example.tienda_calzados.model.validation.RegisterValidation;
 import com.example.tienda_calzados.repository.SaleRepository;
 import com.example.tienda_calzados.repository.UsersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -28,7 +30,7 @@ public class SaleService {
         return new ResponseSaleRegister(sale);
     }
 
-    public Sale getSale(Long id) {
-        return saleRepository.getReferenceById(id);
+    public Page<Sale> getSalesByUserId(Pageable paginacion, Long id) {
+        return saleRepository.findByUsersId(paginacion, id);
     }
 }

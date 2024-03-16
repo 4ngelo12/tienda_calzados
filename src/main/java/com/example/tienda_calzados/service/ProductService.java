@@ -2,7 +2,6 @@ package com.example.tienda_calzados.service;
 
 import com.example.tienda_calzados.model.category.Category;
 import com.example.tienda_calzados.model.products.*;
-import com.example.tienda_calzados.model.validation.RegisterValidation;
 import com.example.tienda_calzados.repository.CategoryRepository;
 import com.example.tienda_calzados.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;

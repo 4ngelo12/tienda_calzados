@@ -1,5 +1,6 @@
 package com.example.tienda_calzados.controller;
 
+import com.example.tienda_calzados.infra.security.AuthUserService;
 import com.example.tienda_calzados.infra.security.JWTToken;
 import com.example.tienda_calzados.infra.security.TokenService;
 import com.example.tienda_calzados.model.users.AuthUserData;
@@ -29,6 +30,8 @@ public class UserController {
     private AuthenticationManager authenticationManager;
     @Autowired
     private UsersService usersService;
+    @Autowired
+    private AuthUserService authUserService;
 
     @PostMapping("/register")
     @Operation(
@@ -50,9 +53,16 @@ public class UserController {
                                                          authData) {
         Authentication authToken = new UsernamePasswordAuthenticationToken(authData.username(),
                 authData.password());
-        var usuarioAutenticado = authenticationManager.authenticate(authToken);
-        var JWTtoken = tokenService.generarTokenEmp((Users) usuarioAutenticado.getPrincipal());
 
-        return ResponseEntity.ok(new JWTToken(JWTtoken));
+        var authUser = authUserService.loadUserByUsername(authData.username());
+
+        if (!authUser.getActive()) {
+           return ResponseEntity.status(409).body(new JWTToken("Su cuenta no se encuentra activa", ""));
+        }
+
+        var usuarioAutenticado = authenticationManager.authenticate(authToken);
+        var jwToken = tokenService.generarTokenEmp((Users) usuarioAutenticado.getPrincipal());
+
+        return ResponseEntity.ok(new JWTToken("", jwToken));
     }
 }

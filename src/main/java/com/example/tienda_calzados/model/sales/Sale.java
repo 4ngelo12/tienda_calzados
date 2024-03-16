@@ -1,6 +1,7 @@
 package com.example.tienda_calzados.model.sales;
 
 import com.example.tienda_calzados.model.users.Users;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.format.annotation.NumberFormat;
@@ -29,6 +30,7 @@ public class Sale {
     private BigDecimal total;
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
+    @JsonIgnoreProperties({"name", "lastname", "email", "birthdate", "password", "active", "role"})
     private Users users;
 
     public Sale(RegisterSale data, Users users) {

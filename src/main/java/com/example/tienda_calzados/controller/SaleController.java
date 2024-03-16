@@ -1,18 +1,18 @@
 package com.example.tienda_calzados.controller;
 
-import com.example.tienda_calzados.model.details.RegisterDetail;
 import com.example.tienda_calzados.model.sales.RegisterSale;
 import com.example.tienda_calzados.model.sales.ResponseSaleRegister;
 import com.example.tienda_calzados.model.sales.Sale;
 import com.example.tienda_calzados.model.users.Users;
 import com.example.tienda_calzados.service.DetailService;
 import com.example.tienda_calzados.service.SaleService;
-import com.example.tienda_calzados.service.ShoppingCartService;
 import com.example.tienda_calzados.service.UsersService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -36,5 +36,15 @@ public class SaleController {
         detailService.insertData(user.getId(), response.id());
 
         return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Page<Sale>> getSalesByUserId(Pageable paginacion, @PathVariable Long id) {
+        return ResponseEntity.ok(saleService.getSalesByUserId(paginacion, id));
+    }
+
+    @GetMapping("/details/{id}")
+    public ResponseEntity<Object> getSale(@PathVariable Long id) {
+        return ResponseEntity.ok(detailService.getDetailsBySaleId(id));
     }
 }

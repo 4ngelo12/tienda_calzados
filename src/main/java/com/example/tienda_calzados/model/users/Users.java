@@ -1,6 +1,7 @@
 package com.example.tienda_calzados.model.users;
 
 import com.example.tienda_calzados.model.Role.Role;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
@@ -34,6 +35,7 @@ public class Users implements UserDetails {
     @Column(name = "birthday")
     protected LocalDate birthdate;
     @Column(length = 60, nullable = false)
+    @JsonIgnore
     protected String password;
     @Column(length = 5, nullable = false, columnDefinition = "tinyint")
     protected Boolean active;
@@ -52,37 +54,47 @@ public class Users implements UserDetails {
     }
 
     @Override
+    @JsonIgnore
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority(getRole().getNombre()));
     }
 
     @Override
+    @JsonIgnore
     public String getUsername() {
         return getEmail();
     }
 
     @Override
+    @JsonIgnore
     public boolean isAccountNonExpired() {
         return true;
     }
 
     @Override
+    @JsonIgnore
     public boolean isAccountNonLocked() {
         return true;
     }
 
     @Override
+    @JsonIgnore
     public boolean isCredentialsNonExpired() {
         return true;
     }
 
     @Override
+    @JsonIgnore
     public boolean isEnabled() {
         return getActive();
     }
 
     public void desactivateAccount() {
         this.active = false;
+    }
+
+    public void activateAccount() {
+        this.active = true;
     }
 
     private <T> void assignIfNotNull(T value, Method setter) {
