@@ -16,7 +16,7 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/product")
+@RequestMapping("/products")
 @CrossOrigin("*")
 @EnableMethodSecurity(securedEnabled = true)
 @SecurityRequirement(name = "bearer-key")
@@ -39,7 +39,7 @@ public class ProductController {
 
     @GetMapping
     public ResponseEntity<Page<ListProductData>> getAllProducts(
-            @PageableDefault(size = 80, page = 0) Pageable paginacion) {
+            Pageable paginacion) {
         return ResponseEntity.ok(productService.getAllProducts(paginacion));
     }
 

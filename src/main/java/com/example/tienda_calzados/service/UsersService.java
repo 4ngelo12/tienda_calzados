@@ -57,6 +57,12 @@ public class UsersService {
         return ResponseEntity.noContent().build();
     }
 
+    public ResponseEntity<Object> activateUser(Long id) {
+        var emp = usersRepository.getReferenceById(id);
+        emp.activateAccount();
+        return ResponseEntity.noContent().build();
+    }
+
     public Users getUser(Long id) {
         return usersRepository.getReferenceById(id);
     }

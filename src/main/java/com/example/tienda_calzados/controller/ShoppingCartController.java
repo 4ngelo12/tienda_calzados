@@ -16,6 +16,8 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/shoppingcart")
 @CrossOrigin("*")
@@ -33,14 +35,25 @@ public class ShoppingCartController {
     }
 
     @GetMapping
-    public ResponseEntity<Page<ListShoppingCartData>> getShoppingCart(
-            @PageableDefault(size = 80, page = 0) Pageable paginacion) {
+    public ResponseEntity<Page<ListShoppingCartData>> getShoppingCart(Pageable paginacion) {
         return ResponseEntity.ok(shoppingCartService.getAllShoppingCartView(paginacion));
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<List<ListShoppingCartData>> getShoppingCartByUserId(@PathVariable Long id) {
+        return ResponseEntity.ok(shoppingCartService.getShoppingCartByUserId(id));
     }
 
     @DeleteMapping("/{id}")
     @Transactional
     public ResponseEntity<Object> deleteElement(@PathVariable Long id) {
         return shoppingCartService.deleteElement(id);
+    }
+
+    @DeleteMapping("/user/{id}")
+    @Transactional
+    public ResponseEntity<Object> deleteElementbyUserId(@PathVariable Long id) {
+        shoppingCartService.deleteAllElement(id);
+        return ResponseEntity.noContent().build();
     }
 }

@@ -30,15 +30,21 @@ public class UsersController {
         return usersService.deleteUser(id);
     }
 
-    @GetMapping
-    public ResponseUserRegister getUser(@RequestHeader("Authorization") String token) {
-        var response = usersService.getUserData(token);
-        return new ResponseUserRegister(response);
+    @PutMapping("/{id}")
+    @Transactional
+    public ResponseEntity<Object> activateUser(@PathVariable Long id) {
+        return usersService.activateUser(id);
     }
 
     @PatchMapping("/{id}")
     @Transactional
     public ResponseEntity<ResponseUserUpdate> updateUser(@RequestBody @Valid UpdateUser data) {
         return ResponseEntity.ok(usersService.userUpdate(data));
+    }
+
+    @GetMapping
+    public ResponseUserRegister getUser(@RequestHeader("Authorization") String token) {
+        var response = usersService.getUserData(token);
+        return new ResponseUserRegister(response);
     }
 }

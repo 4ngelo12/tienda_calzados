@@ -3,6 +3,7 @@ package com.example.tienda_calzados.infra.security;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -31,6 +32,8 @@ public class SecurityConfiguration{
                         .invalidSessionUrl("/auth/login"))
                 .authorizeHttpRequests(authorizeRequests -> authorizeRequests
                         .requestMatchers("/auth/**")
+                        .permitAll()
+                        .requestMatchers(HttpMethod.GET, "/products", "/products/{id}")
                         .permitAll()
                         .requestMatchers("swagger-ui.html","/v3/api-docs/**", "swagger-ui/**")
                         .permitAll()

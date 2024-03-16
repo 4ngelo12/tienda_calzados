@@ -54,6 +54,10 @@ public class ShoppingCartService {
         return shoppingCartRepository.findAll(pageable).map(ListShoppingCartData::new);
     }
 
+    public List<ListShoppingCartData> getShoppingCartByUserId(Long id) {
+        return shoppingCartRepository.findByUsersId(id).stream().map(ListShoppingCartData::new).toList();
+    }
+
     public List<Shoppingcart> getAllShoppingCartbyUserId(Long id) {
         return shoppingCartRepository.findByUsersId(id);
     }

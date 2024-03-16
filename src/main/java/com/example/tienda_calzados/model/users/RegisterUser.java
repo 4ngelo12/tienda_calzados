@@ -8,10 +8,10 @@ import jakarta.validation.constraints.Pattern;
 import java.time.LocalDate;
 
 public record RegisterUser(
-        @NotBlank
+        @NotBlank(message = "")
         @Pattern(regexp = "^[A-Za-záéíóúÁÉÍÓÚüÜñÑ ]{1,45}+$", message = "El nombre ingresado no es valido")
         String name,
-        @NotBlank
+        @NotBlank(message = "No se permite el campo vacio")
         @Pattern(regexp = "^[A-Za-záéíóúÁÉÍÓÚüÜñÑ ]{1,45}+$", message = "El apellido ingresado no es valido ")
         String lastname,
         @NotBlank

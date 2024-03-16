@@ -42,7 +42,9 @@ public class DetailService {
                     element.getSubTotal(), element.getProducts().getId(), saleId);
             saveDetail(detail);
         });
+    }
 
-        shoppingCartService.deleteAllElement(userId);
+    public List<Detail> getDetailsBySaleId(Long saleId) {
+        return detailsRepository.findBySaleId(saleId);
     }
 }
