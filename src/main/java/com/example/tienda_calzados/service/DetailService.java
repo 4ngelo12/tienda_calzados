@@ -23,6 +23,8 @@ public class DetailService {
     @Autowired
     private ShoppingCartService shoppingCartService;
     @Autowired
+    private ProductService productService;
+    @Autowired
     List<RegisterValidation<RegisterDetail>> validadores;
 
     public ResponseDetailRegister saveDetail(RegisterDetail data) {
@@ -30,6 +32,12 @@ public class DetailService {
         var product = productRepository.getReferenceById(data.productId());
         var sale = saleRepository.getReferenceById(data.saleId());
         Detail detail = detailsRepository.save(new Detail(data, product, sale));
+        productService.reduceStock(data.productId(), data.quantity());
+
+        if (product.getStock() == 0) {
+            productService.deleteProduct(data.productId());
+        }
+        System.out.printf("Despues: %d", product.getStock());
 
         return new ResponseDetailRegister(detail);
     }

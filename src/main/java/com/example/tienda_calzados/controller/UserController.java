@@ -60,6 +60,6 @@ public class UserController {
         var usuarioAutenticado = authenticationManager.authenticate(authToken);
         var jwToken = tokenService.generarTokenEmp((Users) usuarioAutenticado.getPrincipal());
 
-        return ResponseEntity.ok(new JWTToken("", jwToken));
+        return ResponseEntity.ok(new JWTToken("Inicio de sesión exitoso", jwToken));
     }
 }

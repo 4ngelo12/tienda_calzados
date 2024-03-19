@@ -4,6 +4,7 @@ import com.example.tienda_calzados.model.category.Category;
 import com.example.tienda_calzados.model.products.*;
 import com.example.tienda_calzados.repository.CategoryRepository;
 import com.example.tienda_calzados.repository.ProductRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -45,15 +46,28 @@ public class ProductService {
         return new ResponseProductRegister(productRepository.getReferenceById(id));
     }
 
-    public ResponseEntity activateProduct(Long id) {
-        var product = productRepository.getReferenceById(id);
+    @Transactional
+    public ResponseEntity<?> activateProduct(Long id) {
+        Products product = productRepository.getReferenceById(id);
         product.activateProduct();
         return ResponseEntity.noContent().build();
     }
 
+    @Transactional
     public ResponseEntity<Object> deleteProduct(Long id) {
-        var product = productRepository.getReferenceById(id);
+        Products product = productRepository.getReferenceById(id);
         product.deleteProduct();
         return ResponseEntity.noContent().build();
+    }
+
+    @Transactional
+    public void reduceStock(Long id, Integer amount) {
+        Products product = productRepository.getReferenceById(id);
+
+        if (product.getStock() < amount) {
+            throw new IllegalStateException("No hay suficiente stock");
+        }
+
+        product.reduceStock(amount);
     }
 }

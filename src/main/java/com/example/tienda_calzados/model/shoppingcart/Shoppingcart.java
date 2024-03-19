@@ -14,6 +14,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
+@Setter
 @EqualsAndHashCode(of = "id")
 @ToString
 public class Shoppingcart {
@@ -34,9 +35,9 @@ public class Shoppingcart {
     @JoinColumn(name = "product_id")
     private Products products;
 
-    public Shoppingcart(RegisterShoppingCart shoppingCart, Users users, Products products) {
+    public Shoppingcart(Integer amount, Users users, Products products) {
         this.code = UUID.randomUUID().toString().substring(0, 16);
-        this.amount = shoppingCart.amount();
+        this.amount = amount;
         this.subTotal = products.subTotal(this.amount, products.getSale_price());
         this.users = users;
         this.products = products;
