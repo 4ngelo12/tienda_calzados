@@ -89,14 +89,6 @@ public class Users implements UserDetails {
         return getActive();
     }
 
-    public void desactivateAccount() {
-        this.active = false;
-    }
-
-    public void activateAccount() {
-        this.active = true;
-    }
-
     private <T> void assignIfNotNull(T value, Method setter) {
         if (value != null) {
             try {
@@ -116,5 +108,17 @@ public class Users implements UserDetails {
         } catch (NoSuchMethodException e) {
             e.printStackTrace();
         }
+    }
+
+    public void desactivateAccount() {
+        this.active = false;
+    }
+
+    public void activateAccount() {
+        this.active = true;
+    }
+
+    public void resetPassword(String password, BCryptPasswordEncoder passwordEncoder) {
+        this.password = passwordEncoder.encode(password);
     }
 }

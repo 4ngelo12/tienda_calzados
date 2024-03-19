@@ -32,6 +32,10 @@ public class SecurityConfiguration{
                 .authorizeHttpRequests(authorizeRequests -> authorizeRequests
                         .requestMatchers("/auth/**")
                         .permitAll()
+                        .requestMatchers("/user/email")
+                        .permitAll()
+                        .requestMatchers("/user/reset-password")
+                        .permitAll()
                         .requestMatchers(HttpMethod.GET, "/products", "/products/{id}")
                         .permitAll()
                         .requestMatchers("/templates")

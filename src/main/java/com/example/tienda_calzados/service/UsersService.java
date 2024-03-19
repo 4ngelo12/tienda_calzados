@@ -73,4 +73,16 @@ public class UsersService {
 
         return new ResponseUserUpdate(users);
     }
+
+    public ResponseEntity<ResponseUserByEmail> getUserByEmail(String email) {
+        var user = usersRepository.getUserData(email);
+        Long id = user.getId();
+        return ResponseEntity.ok().body(new ResponseUserByEmail(id));
+    }
+
+    public ResponseEntity<ResponseResetPassword> resetPassword(ResetPassword data) {
+        var user = usersRepository.getReferenceById(data.id());
+        user.resetPassword(data.password(), passwordEncoder);
+        return ResponseEntity.ok().body(new ResponseResetPassword("Contraseña actualizada correctamente"));
+    }
 }

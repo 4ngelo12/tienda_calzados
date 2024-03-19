@@ -44,4 +44,15 @@ public class UsersController {
         var response = usersService.getUserData(token);
         return new ResponseUserRegister(response);
     }
+
+    @GetMapping("/email")
+    public ResponseEntity<ResponseUserByEmail> getUserByEmail(@RequestParam String email) {
+        return usersService.getUserByEmail(email);
+    }
+
+    @PatchMapping("/reset-password")
+    @Transactional
+    public ResponseEntity<?> resetPassword(@RequestBody @Valid ResetPassword data) {
+        return usersService.resetPassword(data);
+    }
 }
