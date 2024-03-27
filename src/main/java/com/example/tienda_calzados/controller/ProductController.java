@@ -37,6 +37,11 @@ public class ProductController {
                                              @RequestParam Long categoryId) {
         String contentType = file.getContentType();
         String image = file.getOriginalFilename();
+        // Encontrar la posición del primer punto
+        int indicePunto = image.indexOf('.');
+
+        image = indicePunto != -1 ? image.substring(0, indicePunto) : image;
+
         if (contentType == null) {
             return ResponseEntity.badRequest().build();
         }
