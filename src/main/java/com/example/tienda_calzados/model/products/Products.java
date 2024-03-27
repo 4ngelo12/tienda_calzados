@@ -107,4 +107,8 @@ public class Products {
     public BigDecimal subTotal(Integer quantity, BigDecimal price) {
         return price.multiply(new BigDecimal(quantity));
     }
+
+    public void reduceStock(Integer amount) {
+        this.stock -= amount;
+    }
 }
