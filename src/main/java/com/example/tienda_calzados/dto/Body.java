@@ -8,5 +8,5 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 public class Body {
-    private String mensaje;
+    private String message;
 }

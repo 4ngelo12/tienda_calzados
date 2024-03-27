@@ -38,8 +38,12 @@ public class ProductService {
         return new ResponseProductUpdate(products);
     }
 
-    public Page<ListProductData> getAllProducts(Pageable paginacion) {
+    public Page<ListProductData> getAllActiveProducts(Pageable paginacion) {
         return productRepository.findAllByActiveTrue(paginacion).map(ListProductData::new);
+    }
+
+    public Page<ListProductData> getAllProducts(Pageable paginacion) {
+        return productRepository.findAllProducts(paginacion).map(ListProductData::new);
     }
 
     public ResponseProductRegister getProducts(Long id) {

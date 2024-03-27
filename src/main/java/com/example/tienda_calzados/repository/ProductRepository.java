@@ -20,5 +20,9 @@ public interface ProductRepository extends JpaRepository<Products, Long> {
     """)
     boolean existsByIdAndStockGreaterThan(@Param("id") Long id, @Param("amount") Integer amount);
     Page<Products> findAllByActiveTrue(Pageable pageable);
+    @Query("""
+        select p from Product p
+    """)
+    Page<Products> findAllProducts(Pageable pageable);
     List<Products> findAllByCategory_Id(Long categoryId);
 }
